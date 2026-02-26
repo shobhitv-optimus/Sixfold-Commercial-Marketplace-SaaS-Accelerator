@@ -504,7 +504,7 @@ $Connection="Server=tcp:"+$ServerUriPrivate+";Database="+$SQLDatabaseName+";Trus
 
 Write-host "   🔵 Resource Group"
 Write-host "      ➡️ Create Resource Group"
-az group create --location $Location --name $ResourceGroupForDeployment --tags "Owner=gaurav" "Created By=shobhit" "Created For=texttovideo" "Data Store Type=prod" "Environment=prod" "Project=texttovideo" --output $azCliOutput
+az group create --location $Location --name $ResourceGroupForDeployment --tags "Owner=Sixfold" "Created By=shobhit" "Created For=Sixfold" "Data Store Type=prod" "Environment=prod" "Project=sixfoldsaas" --output $azCliOutput
 
 Write-host "      ➡️ Create VNET and Subnet"
 az network vnet create --resource-group $ResourceGroupForDeployment --name $VnetName --address-prefixes "10.0.0.0/20" --output $azCliOutput
@@ -516,7 +516,7 @@ az network vnet subnet create --resource-group $ResourceGroupForDeployment --vne
 Write-host "      ➡️ Create Sql Server"
 $userId = az ad signed-in-user show --query id -o tsv 
 $userdisplayname = az ad signed-in-user show --query displayName -o tsv 
-az sql server create --name $SQLServerName --resource-group $ResourceGroupForDeployment --location $Location --tags "Owner=gaurav" "Created By=shobhit" "Created For=texttovideo" "Data Store Type=prod" "Environment=prod" "Project=texttovideo" --enable-ad-only-auth --external-admin-principal-type User --external-admin-name $userdisplayname --external-admin-sid $userId --output $azCliOutput
+az sql server create --name $SQLServerName --resource-group $ResourceGroupForDeployment --location $Location --tags "Owner=Sixfold" "Created By=shobhit" "Created For=Sixfold" "Data Store Type=prod" "Environment=prod" "Project=sixfoldsaas" --enable-ad-only-auth --external-admin-principal-type User --external-admin-name $userdisplayname --external-admin-sid $userId --output $azCliOutput
 Write-host "      ➡️ Set minimalTlsVersion to 1.2"
 az sql server update --name $SQLServerName --resource-group $ResourceGroupForDeployment --set minimalTlsVersion="1.2"
 Write-host "      ➡️ Add SQL Server Firewall rules"
@@ -534,7 +534,7 @@ Write-host "   🔵 KeyVault"
 Write-host "      ➡️ Create KeyVault"
 
 #az keyvault create --name $KeyVault --resource-group $ResourceGroupForDeployment --enable-rbac-authorization false --output $azCliOutput	; commented for rbac
-az keyvault create --name $KeyVault --resource-group $ResourceGroupForDeployment --enable-rbac-authorization false --tags "Owner=gaurav" "Created By=shobhit" "Created For=texttovideo" "Data Store Type=prod" "Environment=prod" "Project=texttovideo" --output $azCliOutput
+az keyvault create --name $KeyVault --resource-group $ResourceGroupForDeployment --enable-rbac-authorization false --tags "Owner=Sixfold" "Created By=shobhit" "Created For=Sixfold" "Data Store Type=prod" "Environment=prod" "Project=sixfoldsaas" --output $azCliOutput
 
 
 Write-host "      ➡️ Add Secrets"
@@ -546,11 +546,11 @@ az keyvault network-rule add --name $KeyVault --resource-group $ResourceGroupFor
 
 Write-host "   🔵 App Service Plan"
 Write-host "      ➡️ Create App Service Plan"
-az appservice plan create -g $ResourceGroupForDeployment -n $WebAppNameService --sku B1 --output $azCliOutput --tags "Owner=gaurav" "Created By=shobhit" "Created For=texttovideo" "Data Store Type=prod" "Environment=prod" "Project=texttovideo" $azCliOutput
+az appservice plan create -g $ResourceGroupForDeployment -n $WebAppNameService --sku B1 --output $azCliOutput --tags "Owner=Sixfold" "Created By=shobhit" "Created For=Sixfold" "Data Store Type=prod" "Environment=prod" "Project=sixfoldsaas" $azCliOutput
 
 Write-host "   🔵 Admin Portal WebApp"
 Write-host "      ➡️ Create Web App"
-az webapp create -g $ResourceGroupForDeployment -p $WebAppNameService -n $WebAppNameAdmin  --runtime dotnet:8 --tags "Owner=gaurav" "Created By=shobhit" "Created For=texttovideo" "Data Store Type=prod" "Environment=prod" "Project=texttovideo" --output $azCliOutput
+az webapp create -g $ResourceGroupForDeployment -p $WebAppNameService -n $WebAppNameAdmin  --runtime dotnet:8 --tags "Owner=Sixfold" "Created By=shobhit" "Created For=Sixfold" "Data Store Type=prod" "Environment=prod" "Project=sixfoldsaas" --output $azCliOutput
 Write-host "      ➡️ Assign Identity"
 $WebAppNameAdminId = az webapp identity assign -g $ResourceGroupForDeployment  -n $WebAppNameAdmin --identities [system] --query principalId -o tsv
 Write-host "      ➡️ Setup access to KeyVault"
@@ -562,7 +562,7 @@ az webapp config set -g $ResourceGroupForDeployment -n $WebAppNameAdmin --always
 
 Write-host "   🔵 Customer Portal WebApp"
 Write-host "      ➡️ Create Web App"
-az webapp create -g $ResourceGroupForDeployment -p $WebAppNameService -n $WebAppNamePortal --runtime dotnet:8 --tags "Owner=gaurav" "Created By=shobhit" "Created For=texttovideo" "Data Store Type=prod" "Environment=prod" "Project=texttovideo" --output $azCliOutput
+az webapp create -g $ResourceGroupForDeployment -p $WebAppNameService -n $WebAppNamePortal --runtime dotnet:8 --tags "Owner=Sixfold" "Created By=shobhit" "Created For=Sixfold" "Data Store Type=prod" "Environment=prod" "Project=sixfoldsaas" --output $azCliOutput
 Write-host "      ➡️ Assign Identity"
 $WebAppNamePortalId= az webapp identity assign -g $ResourceGroupForDeployment  -n $WebAppNamePortal --identities [system] --query principalId -o tsv 
 Write-host "      ➡️ Setup access to KeyVault"
